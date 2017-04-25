@@ -1,9 +1,14 @@
-# api documentation for  [chai-http (v3.0.0)](https://github.com/chaijs/chai-http#readme)  [![npm package](https://img.shields.io/npm/v/npmdoc-chai-http.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-chai-http) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-chai-http.svg)](https://travis-ci.org/npmdoc/node-npmdoc-chai-http)
+# npmdoc-chai-http
+
+#### basic api documentation for  [chai-http (v3.0.0)](https://github.com/chaijs/chai-http#readme)  [![npm package](https://img.shields.io/npm/v/npmdoc-chai-http.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-chai-http) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-chai-http.svg)](https://travis-ci.org/npmdoc/node-npmdoc-chai-http)
+
 #### Extend Chai Assertion library with tests for http apis
 
-[![NPM](https://nodei.co/npm/chai-http.png?downloads=true)](https://www.npmjs.com/package/chai-http)
+[![NPM](https://nodei.co/npm/chai-http.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/chai-http)
 
-[![apidoc](https://npmdoc.github.io/node-npmdoc-chai-http/build/screenCapture.buildNpmdoc.browser.%252Fhome%252Ftravis%252Fbuild%252Fnpmdoc%252Fnode-npmdoc-chai-http%252Ftmp%252Fbuild%252Fapidoc.html.png)](https://npmdoc.github.io/node-npmdoc-chai-http/build/apidoc.html)
+- [https://npmdoc.github.io/node-npmdoc-chai-http/build/apidoc.html](https://npmdoc.github.io/node-npmdoc-chai-http/build/apidoc.html)
+
+[![apidoc](https://npmdoc.github.io/node-npmdoc-chai-http/build/screenCapture.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png)](https://npmdoc.github.io/node-npmdoc-chai-http/build/apidoc.html)
 
 ![npmPackageListing](https://npmdoc.github.io/node-npmdoc-chai-http/build/screenCapture.npmPackageListing.svg)
 
@@ -17,8 +22,7 @@
 
 {
     "author": {
-        "name": "Jake Luer",
-        "email": "jake@alogicalparadox.com"
+        "name": "Jake Luer"
     },
     "browser": {
         "http": false,
@@ -31,16 +35,13 @@
     },
     "contributors": [
         {
-            "name": "Jake Luer",
-            "email": "jake@alogicalparadox.com"
+            "name": "Jake Luer"
         },
         {
-            "name": "Veselin Todorov",
-            "email": "hi@vesln.com"
+            "name": "Veselin Todorov"
         },
         {
             "name": "Keith Cirkel",
-            "email": "oss@keithcirkel.co.uk",
             "url": "http://keithcirkel.co.uk"
         }
     ],
@@ -91,13 +92,11 @@
     "main": "./index",
     "maintainers": [
         {
-            "name": "chaijs",
-            "email": "chaijs@keithcirkel.co.uk"
+            "name": "chaijs"
         }
     ],
     "name": "chai-http",
     "optionalDependencies": {},
-    "readme": "ERROR: No README data found!",
     "repository": {
         "type": "git",
         "url": "git+ssh://git@github.com/chaijs/chai-http.git"
@@ -113,226 +112,9 @@
         "test": "istanbul cover --report lcovonly _mocha",
         "watch": "npm run build:js -- --watch"
     },
-    "version": "3.0.0"
+    "version": "3.0.0",
+    "bin": {}
 }
-```
-
-
-
-# <a name="apidoc.tableOfContents"></a>[table of contents](#apidoc.tableOfContents)
-
-#### [module chai-http](#apidoc.module.chai-http)
-1.  [function <span class="apidocSignatureSpan">chai-http.</span>request (app)](#apidoc.element.chai-http.request)
-1.  object <span class="apidocSignatureSpan">chai-http.</span>net
-
-#### [module chai-http.net](#apidoc.module.chai-http.net)
-1.  [function <span class="apidocSignatureSpan">chai-http.net.</span>isIP (str)](#apidoc.element.chai-http.net.isIP)
-1.  [function <span class="apidocSignatureSpan">chai-http.net.</span>isIPv4 (str)](#apidoc.element.chai-http.net.isIPv4)
-1.  [function <span class="apidocSignatureSpan">chai-http.net.</span>isIPv6 (str)](#apidoc.element.chai-http.net.isIPv6)
-
-#### [module chai-http.request](#apidoc.module.chai-http.request)
-1.  [function <span class="apidocSignatureSpan">chai-http.</span>request (app)](#apidoc.element.chai-http.request.request)
-1.  [function <span class="apidocSignatureSpan">chai-http.request.</span>Request (app, method, path)](#apidoc.element.chai-http.request.Request)
-1.  [function <span class="apidocSignatureSpan">chai-http.request.</span>Test (app, method, path)](#apidoc.element.chai-http.request.Test)
-1.  [function <span class="apidocSignatureSpan">chai-http.request.</span>agent (app)](#apidoc.element.chai-http.request.agent)
-
-
-
-# <a name="apidoc.module.chai-http"></a>[module chai-http](#apidoc.module.chai-http)
-
-#### <a name="apidoc.element.chai-http.request"></a>[function <span class="apidocSignatureSpan">chai-http.</span>request (app)](#apidoc.element.chai-http.request)
-- description and source-code
-```javascript
-request = function (app) {
-
-<span class="apidocCodeCommentSpan">  /*!
-   * @param {Mixed} function or server
-   * @returns {Object} API
-   */
-</span>
-  var server = ('function' === typeof app)
-      ? http.createServer(app)
-      : app
-    , obj = {};
-
-  methods.forEach(function (method) {
-    obj[method] = function (path) {
-      return new Test(server, method, path);
-    };
-  });
-  obj.del = obj.delete;
-
-  return obj;
-}
-```
-- example usage
-```shell
-...
-* or a node.js http(s) server as the foundation for your request.
-* If the server is not running, chai-http will find a suitable
-* port to listen on for a given test.
-*
-* __Note:__ This feature is only supported on Node.js, not in web browsers.
-*
-* '''js
-* chai.request(app)
-*   .get('/')
-* '''
-*
-* #### URL
-*
-* You may also use a base url as the foundation of your request.
-*
-...
-```
-
-
-
-# <a name="apidoc.module.chai-http.net"></a>[module chai-http.net](#apidoc.module.chai-http.net)
-
-#### <a name="apidoc.element.chai-http.net.isIP"></a>[function <span class="apidocSignatureSpan">chai-http.net.</span>isIP (str)](#apidoc.element.chai-http.net.isIP)
-- description and source-code
-```javascript
-isIP = function (str) {
-	return ipRegex({exact: true}).test(str);
-}
-```
-- example usage
-```shell
-n/a
-```
-
-#### <a name="apidoc.element.chai-http.net.isIPv4"></a>[function <span class="apidocSignatureSpan">chai-http.net.</span>isIPv4 (str)](#apidoc.element.chai-http.net.isIPv4)
-- description and source-code
-```javascript
-isIPv4 = function (str) {
-	return ipRegex.v4({exact: true}).test(str);
-}
-```
-- example usage
-```shell
-n/a
-```
-
-#### <a name="apidoc.element.chai-http.net.isIPv6"></a>[function <span class="apidocSignatureSpan">chai-http.net.</span>isIPv6 (str)](#apidoc.element.chai-http.net.isIPv6)
-- description and source-code
-```javascript
-isIPv6 = function (str) {
-	return ipRegex.v6({exact: true}).test(str);
-}
-```
-- example usage
-```shell
-n/a
-```
-
-
-
-# <a name="apidoc.module.chai-http.request"></a>[module chai-http.request](#apidoc.module.chai-http.request)
-
-#### <a name="apidoc.element.chai-http.request.request"></a>[function <span class="apidocSignatureSpan">chai-http.</span>request (app)](#apidoc.element.chai-http.request.request)
-- description and source-code
-```javascript
-request = function (app) {
-
-<span class="apidocCodeCommentSpan">  /*!
-   * @param {Mixed} function or server
-   * @returns {Object} API
-   */
-</span>
-  var server = ('function' === typeof app)
-      ? http.createServer(app)
-      : app
-    , obj = {};
-
-  methods.forEach(function (method) {
-    obj[method] = function (path) {
-      return new Test(server, method, path);
-    };
-  });
-  obj.del = obj.delete;
-
-  return obj;
-}
-```
-- example usage
-```shell
-...
-* or a node.js http(s) server as the foundation for your request.
-* If the server is not running, chai-http will find a suitable
-* port to listen on for a given test.
-*
-* __Note:__ This feature is only supported on Node.js, not in web browsers.
-*
-* '''js
-* chai.request(app)
-*   .get('/')
-* '''
-*
-* #### URL
-*
-* You may also use a base url as the foundation of your request.
-*
-...
-```
-
-#### <a name="apidoc.element.chai-http.request.Request"></a>[function <span class="apidocSignatureSpan">chai-http.request.</span>Request (app, method, path)](#apidoc.element.chai-http.request.Request)
-- description and source-code
-```javascript
-function Test(app, method, path) {
-  Request.call(this, method, path);
-  this.app = app;
-  this.url = typeof app === 'string' ? app + path : serverAddress(app, path);
-}
-```
-- example usage
-```shell
-n/a
-```
-
-#### <a name="apidoc.element.chai-http.request.Test"></a>[function <span class="apidocSignatureSpan">chai-http.request.</span>Test (app, method, path)](#apidoc.element.chai-http.request.Test)
-- description and source-code
-```javascript
-function Test(app, method, path) {
-  Request.call(this, method, path);
-  this.app = app;
-  this.url = typeof app === 'string' ? app + path : serverAddress(app, path);
-}
-```
-- example usage
-```shell
-n/a
-```
-
-#### <a name="apidoc.element.chai-http.request.agent"></a>[function <span class="apidocSignatureSpan">chai-http.request.</span>agent (app)](#apidoc.element.chai-http.request.agent)
-- description and source-code
-```javascript
-function TestAgent(app) {
-  if (!(this instanceof TestAgent)) return new TestAgent(app);
-  if (typeof app === 'function') app = http.createServer(app);
-  (Agent || Request).call(this);
-  this.app = app;
-}
-```
-- example usage
-```shell
-...
-*   chai.request.addPromises(q.Promise);
-* }
-* '''
-*
-* #### Retaining cookies with each request
-*
-* Sometimes you need to keep cookies from one request, and send them with the
-* next. For this, '.request.agent()' is available:
-*
-* '''js
-* // Log in
-* var agent = chai.request.agent(app)
-* agent
-*   .post('/session')
-*   .send({ username: 'me', password: '123' })
-...
 ```
 
 
