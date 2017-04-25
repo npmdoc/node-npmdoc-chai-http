@@ -63,6 +63,15 @@
 
         <li>
 
+            <a class="apidocElementLiA" href="#apidoc.element.chai-http.chai-http">
+            function <span class="apidocSignatureSpan"></span>chai-http
+            <span class="apidocSignatureSpan">(chai, _)</span>
+            </a>
+
+        </li>
+
+        <li>
+
             <a class="apidocElementLiA" href="#apidoc.element.chai-http.request">
             function <span class="apidocSignatureSpan">chai-http.</span>request
             <span class="apidocSignatureSpan">(app)</span>
@@ -156,6 +165,182 @@
 
 
     <h2>
+        <a href="#apidoc.element.chai-http.chai-http" id="apidoc.element.chai-http.chai-http">
+        function <span class="apidocSignatureSpan"></span>chai-http
+        <span class="apidocSignatureSpan">(chai, _)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">chai-http = function (chai, _) {
+
+<span class="apidocCodeCommentSpan">  /*!
+   * Module dependencies.
+   */
+</span>
+  var net = require(&#x27;net&#x27;);
+  var qs = require(&#x27;qs&#x27;);
+  var url = require(&#x27;url&#x27;);
+  var Cookie = require(&#x27;cookiejar&#x27;);
+
+  /*!
+   * Aliases.
+   */
+
+  var Assertion = chai.Assertion
+    , i = _.inspect;
+
+  /*!
+   * Expose request builder
+   */
+
+  chai.request = require(&#x27;./request&#x27;);
+
+  /*!
+   * Content types hash. Used to
+   * define `Assertion` properties.
+   *
+   * @type {Object}
+   */
+
+  var contentTypes = {
+      json: &#x27;application/json&#x27;
+    , text: &#x27;text/plain&#x27;
+    , html: &#x27;text/html&#x27;
+  };
+
+  /*!
+   * Return a header from `Request` or `Response` object.
+   *
+   * @param {Request|Response} object
+   * @param {String} Header
+   * @returns {String|Undefined}
+   */
+
+  function getHeader(obj, key) {
+    if (key) key = key.toLowerCase();
+    if (obj.getHeader) return obj.getHeader(key);
+    if (obj.headers) return obj.headers[key];
+  };
+
+  /**
+   * ### .status (code)
+   *
+   * Assert that a response has a supplied status.
+   *
+   * ```js
+   * expect(res).to.have.status(200);
+   * ```
+   *
+   * @param {Number} status number
+   * @name status
+   * @api public
+   */
+
+  Assertion.addMethod(&#x27;status&#x27;, function (code) {
+    new Assertion(this._obj).to.have.property(&#x27;status&#x27;);
+    var status = this._obj.status;
+
+    this.assert(
+        status == code
+      , &#x27;expected #{this} to have status code #{exp} but got #{act}&#x27;
+      , &#x27;expected #{this} to not have status code #{act}&#x27;
+      , code
+      , status
+    );
+  });
+
+  /**
+   * ### .header (key[, value])
+   *
+   * Assert that a `Response` or `Request` object has a header.
+   * If a value is provided, equality to value will be asserted.
+   * You may also pass a regular expression to check.
+   *
+   * __Note:__ When running in a web browser, the
+   * [same-origin policy](https://tools.ietf.org/html/rfc6454#section-3)
+   * only allows Chai HTTP to read
+   * [certain headers](https://www.w3.org/TR/cors/#simple-response-header),
+   * which can cause assertions to fail.
+   *
+   * ```js
+   * expect(req).to.have.header(&#x27;x-api-key&#x27;);
+   * expect(req).to.have.header(&#x27;content-type&#x27;, &#x27;text/plain&#x27;);
+   * expect(req).to.have.header(&#x27;content-type&#x27;, /^text/);
+   * ```
+   *
+   * @param {String} header key (case insensitive)
+   * @param {String|RegExp} header value (optional)
+   * @name header
+   * @api public
+   */
+
+  Assertion.addMethod(&#x27;header&#x27;, function (key, value) {
+    var header = getHeader(this._obj, key);
+
+    if (arguments.length &#x3c; 2) {
+      this.assert(
+          &#x27;undefined&#x27; !== typeof header || null === header
+        , &#x27;expected header \&#x27;&#x27; + key + &#x27;\&#x27; to exist&#x27;
+        , &#x27;expected header \&#x27;&#x27; + key + &#x27;\&#x27; to not exist&#x27;
+      );
+    } else if (arguments[1] instanceof RegExp) {
+      this.assert(
+          value.test(header)
+        , &#x27;expected header \&#x27;&#x27; + key + &#x27;\&#x27; to match &#x27; + value + &#x27; but got &#x27; + i(header)
+        , &#x27;expected header \&#x27;&#x27; + key + &#x27;\&#x27; not to match &#x27; + value + &#x27; but got &#x27; + i(header)
+        , value
+        , header
+      );
+    } else {
+      this.assert(
+          header == value
+        , &#x27;expected header \&#x27;&#x27; + key + &#x27;\&#x27; to have value &#x27; + value + &#x27; but got &#x27; + i(header)
+        , &#x27;expected header \&#x27;&#x27; + key + &#x27;\&#x27; to not have value &#x27; + value
+        , value
+        , header
+      );
+    }
+  });
+
+  /**
+   * ### .headers
+   *
+   * Assert that a `Response` or `Request` object has headers.
+   *
+   * __Note:__ When running in a web browser, the
+   * [same-origin policy](https://tools.ietf.org/html/rfc6454#section-3)
+   * only allows Chai HTTP to read
+   * [certain headers](https://www.w3.org/TR/cors/#simple-response-header),
+   * which can cause assertions to fail.
+   *
+   * ```js
+   * expect(req).to.have.headers;
+   * ```
+   *
+   * @name headers
+   * @api public
+   */
+
+  Assertion.addProperty(&#x27;headers&#x27;, function () {
+    this.assert(
+        this._obj.headers || this._obj.getHeader
+      , &#x27;expected #{this} to have headers or getHeader method&#x27;
+      , &#x27;expected #{this} to not have headers or getHeader method&#x27;
+    );
+  });
+
+  /**
+   * ### .ip
+   *
+   * Assert that a string represents valid ip address.
+   *
+   * ```j ...</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
         <a href="#apidoc.element.chai-http.request" id="apidoc.element.chai-http.request">
         function <span class="apidocSignatureSpan">chai-http.</span>request
         <span class="apidocSignatureSpan">(app)</span>
@@ -221,7 +406,23 @@
     <li>description and source-code<pre class="apidocCodePre">isIP = function (str) {
 	return ipRegex({exact: true}).test(str);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+ *
+ * @name ip
+ * @api public
+ */
+
+Assertion.addProperty(&#x27;ip&#x27;, function () {
+  this.assert(
+      net.<span class="apidocCodeKeywordSpan">isIP</span>(this._obj)
+    , &#x27;expected #{this} to be an ip&#x27;
+    , &#x27;expected #{this} to not be an ip&#x27;
+  );
+});
+
+/**
+ * ### .json / .text / .html
+...</pre></li>
     </ul>
 
 
